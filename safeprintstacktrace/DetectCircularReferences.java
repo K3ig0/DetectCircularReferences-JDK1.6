@@ -41,7 +41,11 @@ public class DetectCircularReferences {
 		Throwable deepCause = th.getCause();
 		while (deepCause != null && currentDeep < maxDeep) {
 			if (deepCause == th) {
-				return ExceptionUtils.getRootCause(deepCause);
+				final Throwable rootCause = ExceptionUtils.getRootCause(deepCause);
+				if (rootCause == null) {
+					return deepCause;
+				}
+				return rootCause;
 			}
 			deepCause = deepCause.getCause();
 			currentDeep++;
